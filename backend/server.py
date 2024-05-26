@@ -19,5 +19,7 @@ def upload():
     # Plug it into whisper
     # Return data
     if request.method == 'POST':
-        f = request.files['file']
-        f.save('/files')
+        print(request.files.get('video', None))
+        f = request.files.get('video', None)
+        f.save("./temp.mp4")
+        return "File received"
