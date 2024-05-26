@@ -1,0 +1,303 @@
+{
+    "0": [
+        " Subscriptions sucks. There are so many services with subscriptions now",
+        {
+            "start": 0.0,
+            "end": 3.86
+        }
+    ],
+    "1": [
+        " and they suck because they are so hard to keep track of. So I wonder to make an app that",
+        {
+            "start": 3.86,
+            "end": 8.2
+        }
+    ],
+    "2": [
+        " manages your subscriptions. But how? This is React Native and is used to make native ROS and Android",
+        {
+            "start": 8.2,
+            "end": 14.92
+        }
+    ],
+    "3": [
+        " apps in one single codebase and with the Expo ecosystem we can build this app easily.",
+        {
+            "start": 14.92,
+            "end": 21.78
+        }
+    ],
+    "4": [
+        " First we need to list out the features of our app. A subscription tracker should have two simple",
+        {
+            "start": 22.88,
+            "end": 28.8
+        }
+    ],
+    "5": [
+        " features showing you the services you are subscribed to and to tell you when payment is due.",
+        {
+            "start": 28.8,
+            "end": 34.06
+        }
+    ],
+    "6": [
+        " And honestly subscription based services are pretty predatory but I will leave the",
+        {
+            "start": 35.32,
+            "end": 40.14
+        }
+    ],
+    "7": [
+        " yapping to the end of the video because I know you want to see me build this. So off we go",
+        {
+            "start": 40.14,
+            "end": 45.36
+        }
+    ],
+    "8": [
+        " building our app. For the tech stack we are going to use React Native for our mobile friend and",
+        {
+            "start": 45.36,
+            "end": 50.52
+        }
+    ],
+    "9": [
+        " Expo to make development easier and that is actually it. There is no need to connect to the cloud",
+        {
+            "start": 50.52,
+            "end": 57.52
+        }
+    ],
+    "10": [
+        " and I don't see a need for me to have access to your financial data. As a bonus of doing so you can",
+        {
+            "start": 57.52,
+            "end": 63.3
+        }
+    ],
+    "11": [
+        " use this app in offline mode. So off we go to Figma to design the app and while you see me do up",
+        {
+            "start": 63.3,
+            "end": 69.86
+        }
+    ],
+    "12": [
+        " the Figma here are some thoughts when designing. First off the color scheme is based on notions",
+        {
+            "start": 69.86,
+            "end": 75.38
+        }
+    ],
+    "13": [
+        " designed because I just love the aesthetic. Next I'm sure to use frames and auto layout so there are",
+        {
+            "start": 75.38,
+            "end": 82.08
+        }
+    ],
+    "14": [
+        " no where my flex boxes need to be and how many of them are needed. After that I make sure to reuse",
+        {
+            "start": 82.08,
+            "end": 88.4
+        }
+    ],
+    "15": [
+        " designs to give the app some consistency. I shouldn't mess up the design that much by following",
+        {
+            "start": 88.4,
+            "end": 94.16
+        }
+    ],
+    "16": [
+        " these principles so let's see how the coding side of things go. Okay so we ran into a problem.",
+        {
+            "start": 94.16,
+            "end": 99.8
+        }
+    ],
+    "17": [
+        " While developing the app turns out I need a database to actually store and query the data and",
+        {
+            "start": 100.34,
+            "end": 105.4
+        }
+    ],
+    "18": [
+        " not some random JSON file. So I have to use SQL like which will help me with relations but don't",
+        {
+            "start": 105.4,
+            "end": 113.32
+        }
+    ],
+    "19": [
+        " worry I'm still using local storage so no external database is needed. I won't have your data.",
+        {
+            "start": 113.32,
+            "end": 120.38
+        }
+    ],
+    "20": [
+        " With that hiccup all of the way I started drawing up the database. Well I did not expect naming",
+        {
+            "start": 121.72,
+            "end": 128.18
+        }
+    ],
+    "21": [
+        " things to be this hard as well and I have to change a few names and make things clearer. After days",
+        {
+            "start": 128.18,
+            "end": 133.84
+        }
+    ],
+    "22": [
+        " and weeks of programming I'm finally finished. And I can add my subscriptions like Netflix, my phone",
+        {
+            "start": 133.84,
+            "end": 143.26
+        }
+    ],
+    "23": [
+        " build and figure out when the next date will be. Now personally when I use this app the answer is",
+        {
+            "start": 143.26,
+            "end": 152.58
+        }
+    ],
+    "24": [
+        " a straight up node because I could track all of these using Excel and Google Sheets or Notion.",
+        {
+            "start": 152.58,
+            "end": 157.52
+        }
+    ],
+    "25": [
+        " For me to use this app it will need more features like customizability and data analytics.",
+        {
+            "start": 158.08,
+            "end": 163.74
+        }
+    ],
+    "26": [
+        " But this does not have to be the end for money plan. I did plan for this app to have",
+        {
+            "start": 165.4,
+            "end": 171.04
+        }
+    ],
+    "27": [
+        " notion like customizability and for widgets to exist like on your iPhone. Also the app didn't",
+        {
+            "start": 171.04,
+            "end": 179.9
+        }
+    ],
+    "28": [
+        " turn out as well as I hoped it would be but I think that part is due to me only having the",
+        {
+            "start": 179.9,
+            "end": 186.14
+        }
+    ],
+    "29": [
+        " weekends to code it up. Also I think that this app kind of highlights one of the problem with",
+        {
+            "start": 186.14,
+            "end": 191.7
+        }
+    ],
+    "30": [
+        " business development for apps because does your company actually need an app or will especially do.",
+        {
+            "start": 191.7,
+            "end": 198.6
+        }
+    ],
+    "31": [
+        " Well this site project has been fun and I've learned a lot about React Native while doing this.",
+        {
+            "start": 199.86,
+            "end": 204.8
+        }
+    ],
+    "32": [
+        " Before I end the video here are some learning points I had while developing this. So JavaScript",
+        {
+            "start": 205.62,
+            "end": 211.34
+        }
+    ],
+    "33": [
+        " are paying to work with because they have like different time zones and yeah the",
+        {
+            "start": 212.06,
+            "end": 217.52
+        }
+    ],
+    "34": [
+        " using the date object is actually quite painful and I should use TypeScript because of wrong types",
+        {
+            "start": 218.38,
+            "end": 225.08
+        }
+    ],
+    "35": [
+        " that I keep occurring. I couldn't debug the issue for hours until I checked the type of some variable",
+        {
+            "start": 225.66,
+            "end": 232.92
+        }
+    ],
+    "36": [
+        " and this kept causing issues which I took hours to solve but yeah I think using TypeScript will have",
+        {
+            "start": 233.42000000000002,
+            "end": 240.7
+        }
+    ],
+    "37": [
+        " helped me with the development process and also error handling is not as bad as I thought it would be",
+        {
+            "start": 240.7,
+            "end": 246.61999999999998
+        }
+    ],
+    "38": [
+        " and I should only use dependencies if required and for the React Native South of the house",
+        {
+            "start": 247.36,
+            "end": 253.18
+        }
+    ],
+    "39": [
+        " there are a lot of UI components or native UI components from iOS and Android that people have already made",
+        {
+            "start": 253.98,
+            "end": 260.32
+        }
+    ],
+    "40": [
+        " so I shouldn't be trying to remake my own bottom sheet or remake my own picker wheel for those",
+        {
+            "start": 260.94,
+            "end": 268.84
+        }
+    ],
+    "41": [
+        " cases but yeah I'll only use dependencies if required and where they save me a considerable amount of time.",
+        {
+            "start": 268.84,
+            "end": 275.98
+        }
+    ],
+    "42": [
+        " In the meantime here are some videos for our next watch.",
+        {
+            "start": 276.24,
+            "end": 278.44
+        }
+    ]
+}
