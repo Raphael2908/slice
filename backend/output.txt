@@ -1,303 +1,352 @@
 {
     "0": [
-        " Subscriptions sucks. There are so many services with subscriptions now",
+        " Advice, I wish someone told me in my 20s.",
         {
             "start": 0.0,
-            "end": 3.86
+            "end": 2.1
         }
     ],
     "1": [
-        " and they suck because they are so hard to keep track of. So I wonder to make an app that",
+        " When I was in my 20s, I had this idea that going to work and working hard on my job",
         {
-            "start": 3.86,
-            "end": 8.2
+            "start": 2.24,
+            "end": 5.74
         }
     ],
     "2": [
-        " manages your subscriptions. But how? This is React Native and is used to make native ROS and Android",
+        " was going to solve all my problems and leave me to a better life.",
         {
-            "start": 8.2,
-            "end": 14.92
+            "start": 5.74,
+            "end": 8.86
         }
     ],
     "3": [
-        " apps in one single codebase and with the Expo ecosystem we can build this app easily.",
+        " The age of 17, I worked as a carpenter and I did it for 10 years.",
         {
-            "start": 14.92,
-            "end": 21.78
+            "start": 9.06,
+            "end": 11.92
         }
     ],
     "4": [
-        " First we need to list out the features of our app. A subscription tracker should have two simple",
+        " At the time, I didn't really have much direction in life, but I had this philosophy.",
         {
-            "start": 22.88,
-            "end": 28.8
+            "start": 12.1,
+            "end": 14.54
         }
     ],
     "5": [
-        " features showing you the services you are subscribed to and to tell you when payment is due.",
+        " I just put my head down and I worked hard on my job, I would be successful.",
         {
-            "start": 28.8,
-            "end": 34.06
+            "start": 14.76,
+            "end": 17.3
         }
     ],
     "6": [
-        " And honestly subscription based services are pretty predatory but I will leave the",
+        " And it wasn't until I turned about 26, I realized,",
         {
-            "start": 35.32,
-            "end": 40.14
+            "start": 17.7,
+            "end": 19.72
         }
     ],
     "7": [
-        " yapping to the end of the video because I know you want to see me build this. So off we go",
+        " hey, I haven't really made much progress in life.",
         {
-            "start": 40.14,
-            "end": 45.36
+            "start": 19.94,
+            "end": 22.28
         }
     ],
     "8": [
-        " building our app. For the tech stack we are going to use React Native for our mobile friend and",
+        " Sure, my money was up, I was earning a bit more than before,",
         {
-            "start": 45.36,
-            "end": 50.52
+            "start": 22.6,
+            "end": 24.74
         }
     ],
     "9": [
-        " Expo to make development easier and that is actually it. There is no need to connect to the cloud",
+        " I drove a slightly better carpenter before, but nothing in life really changed.",
         {
-            "start": 50.52,
-            "end": 57.52
+            "start": 25.06,
+            "end": 28.26
         }
     ],
     "10": [
-        " and I don't see a need for me to have access to your financial data. As a bonus of doing so you can",
+        " I was still waking up in the morning, dreading Monday to Friday,",
         {
-            "start": 57.52,
-            "end": 63.3
+            "start": 28.26,
+            "end": 31.12
         }
     ],
     "11": [
-        " use this app in offline mode. So off we go to Figma to design the app and while you see me do up",
+        " like I did for the last 10 years.",
         {
-            "start": 63.3,
-            "end": 69.86
+            "start": 31.36,
+            "end": 32.8
         }
     ],
     "12": [
-        " the Figma here are some thoughts when designing. First off the color scheme is based on notions",
+        " Leave down, I was really unhappy and unfulfilled.",
         {
-            "start": 69.86,
-            "end": 75.38
+            "start": 32.94,
+            "end": 34.96
         }
     ],
     "13": [
-        " designed because I just love the aesthetic. Next I'm sure to use frames and auto layout so there are",
+        " And boom, that's when I dawn on me, I made a mistake.",
         {
-            "start": 75.38,
-            "end": 82.08
+            "start": 35.26,
+            "end": 37.26
         }
     ],
     "14": [
-        " no where my flex boxes need to be and how many of them are needed. After that I make sure to reuse",
+        " This whole time, I've been focusing on the wrong thing.",
         {
-            "start": 82.08,
-            "end": 88.4
+            "start": 37.58,
+            "end": 39.7
         }
     ],
     "15": [
-        " designs to give the app some consistency. I shouldn't mess up the design that much by following",
+        " All these years, I spent working hard on my job,",
         {
-            "start": 88.4,
-            "end": 94.16
+            "start": 39.92,
+            "end": 41.88
         }
     ],
     "16": [
-        " these principles so let's see how the coding side of things go. Okay so we ran into a problem.",
+        " I should have spent working hard on myself.",
         {
-            "start": 94.16,
-            "end": 99.8
+            "start": 42.24,
+            "end": 44.06
         }
     ],
     "17": [
-        " While developing the app turns out I need a database to actually store and query the data and",
+        " This job wasn't going to solve all my problems and give me a better life.",
         {
-            "start": 100.34,
-            "end": 105.4
+            "start": 44.56,
+            "end": 47.2
         }
     ],
     "18": [
-        " not some random JSON file. So I have to use SQL like which will help me with relations but don't",
+        " It was all up to me.",
         {
-            "start": 105.4,
-            "end": 113.32
+            "start": 47.44,
+            "end": 48.12
         }
     ],
     "19": [
-        " worry I'm still using local storage so no external database is needed. I won't have your data.",
+        " So for the next year, I still go to work, you know,",
         {
-            "start": 113.32,
-            "end": 120.38
+            "start": 48.4,
+            "end": 50.14
         }
     ],
     "20": [
-        " With that hiccup all of the way I started drawing up the database. Well I did not expect naming",
+        " 7 a.m. to 4 p.m. because I had to,",
         {
-            "start": 121.72,
-            "end": 128.18
+            "start": 50.32,
+            "end": 51.9
         }
     ],
     "21": [
-        " things to be this hard as well and I have to change a few names and make things clearer. After days",
+        " but for the rest of the day, I will study personal development.",
         {
-            "start": 128.18,
-            "end": 133.84
+            "start": 52.04,
+            "end": 54.46
         }
     ],
     "22": [
-        " and weeks of programming I'm finally finished. And I can add my subscriptions like Netflix, my phone",
+        " On the way to work, on the way to earn, podcasting the car.",
         {
-            "start": 133.84,
-            "end": 143.26
+            "start": 54.66,
+            "end": 57.08
         }
     ],
     "23": [
-        " build and figure out when the next date will be. Now personally when I use this app the answer is",
+        " After I did it, I read books that I fell asleep.",
         {
-            "start": 143.26,
-            "end": 152.58
+            "start": 57.08,
+            "end": 59.12
         }
     ],
     "24": [
-        " a straight up node because I could track all of these using Excel and Google Sheets or Notion.",
+        " I even read them on lunch breaks sometimes, just on the building site.",
         {
-            "start": 152.58,
-            "end": 157.52
+            "start": 59.38,
+            "end": 61.74
         }
     ],
     "25": [
-        " For me to use this app it will need more features like customizability and data analytics.",
+        " And it sounds like hard work, but it really wasn't.",
         {
-            "start": 158.08,
-            "end": 163.74
+            "start": 61.92,
+            "end": 63.64
         }
     ],
     "26": [
-        " But this does not have to be the end for money plan. I did plan for this app to have",
+        " You know, the more that you work on yourself, the more light you could see.",
         {
-            "start": 165.4,
-            "end": 171.04
+            "start": 63.78,
+            "end": 66.16
         }
     ],
     "27": [
-        " notion like customizability and for widgets to exist like on your iPhone. Also the app didn't",
+        " I could feel it, I could taste it, that my life was about to change,",
         {
-            "start": 171.04,
-            "end": 179.9
+            "start": 66.52,
+            "end": 68.82
         }
     ],
     "28": [
-        " turn out as well as I hoped it would be but I think that part is due to me only having the",
+        " and it motivated me.",
         {
-            "start": 179.9,
-            "end": 186.14
+            "start": 69.0,
+            "end": 69.8
         }
     ],
     "29": [
-        " weekends to code it up. Also I think that this app kind of highlights one of the problem with",
+        " Ah, if you guys haven't realized, we've moved into a new house.",
         {
-            "start": 186.14,
-            "end": 191.7
+            "start": 70.02,
+            "end": 72.4
         }
     ],
     "30": [
-        " business development for apps because does your company actually need an app or will especially do.",
+        " Anyways, after a short while, I quit my career in carpentry,",
         {
-            "start": 191.7,
-            "end": 198.6
+            "start": 72.6,
+            "end": 74.84
         }
     ],
     "31": [
-        " Well this site project has been fun and I've learned a lot about React Native while doing this.",
+        " and the rest is history.",
         {
-            "start": 199.86,
-            "end": 204.8
+            "start": 75.22,
+            "end": 76.1
         }
     ],
     "32": [
-        " Before I end the video here are some learning points I had while developing this. So JavaScript",
+        " Where I am, my life right now on how I feel every day is beautiful.",
         {
-            "start": 205.62,
-            "end": 211.34
+            "start": 76.36,
+            "end": 79.46
         }
     ],
     "33": [
-        " are paying to work with because they have like different time zones and yeah the",
+        " I would not have any other way.",
         {
-            "start": 212.06,
-            "end": 217.52
+            "start": 79.78,
+            "end": 81.06
         }
     ],
     "34": [
-        " using the date object is actually quite painful and I should use TypeScript because of wrong types",
+        " Look, everyone has different values in life,",
         {
-            "start": 218.38,
-            "end": 225.08
+            "start": 81.28,
+            "end": 83.04
         }
     ],
     "35": [
-        " that I keep occurring. I couldn't debug the issue for hours until I checked the type of some variable",
+        " different ones that needs.",
         {
-            "start": 225.66,
-            "end": 232.92
+            "start": 83.26,
+            "end": 84.0
         }
     ],
     "36": [
-        " and this kept causing issues which I took hours to solve but yeah I think using TypeScript will have",
+        " I can't tell you, my path is the exact path you should follow.",
         {
-            "start": 233.42000000000002,
-            "end": 240.7
+            "start": 84.0,
+            "end": 87.2
         }
     ],
     "37": [
-        " helped me with the development process and also error handling is not as bad as I thought it would be",
+        " But I can't tell you this.",
         {
-            "start": 240.7,
-            "end": 246.61999999999998
+            "start": 87.48,
+            "end": 88.32
         }
     ],
     "38": [
-        " and I should only use dependencies if required and for the React Native South of the house",
+        " Your main focus in your 20s should be focusing on yourself.",
         {
-            "start": 247.36,
-            "end": 253.18
+            "start": 88.62,
+            "end": 91.88
         }
     ],
     "39": [
-        " there are a lot of UI components or native UI components from iOS and Android that people have already made",
+        " Personal development.",
         {
-            "start": 253.98,
-            "end": 260.32
+            "start": 92.62,
+            "end": 93.42
         }
     ],
     "40": [
-        " so I shouldn't be trying to remake my own bottom sheet or remake my own picker wheel for those",
+        " Now, I'm not saying I quit your job tomorrow.",
         {
-            "start": 260.94,
-            "end": 268.84
+            "start": 93.68,
+            "end": 94.98
         }
     ],
     "41": [
-        " cases but yeah I'll only use dependencies if required and where they save me a considerable amount of time.",
+        " Work needs to be done, but don't mistake an old work for good work.",
         {
-            "start": 268.84,
-            "end": 275.98
+            "start": 95.26,
+            "end": 98.9
         }
     ],
     "42": [
-        " In the meantime here are some videos for our next watch.",
+        " You know, running in the wrong direction is just as hard as running in the right direction.",
         {
-            "start": 276.24,
-            "end": 278.44
+            "start": 99.22,
+            "end": 102.26
+        }
+    ],
+    "43": [
+        " And if you are not working hard on yourself, you are running in the wrong direction.",
+        {
+            "start": 102.48,
+            "end": 105.64
+        }
+    ],
+    "44": [
+        " I'll leave you guys a little quote today.",
+        {
+            "start": 105.8,
+            "end": 107.02
+        }
+    ],
+    "45": [
+        " In this life, you can have more than what you got",
+        {
+            "start": 107.28,
+            "end": 110.02
+        }
+    ],
+    "46": [
+        " because you can become more than who you are.",
+        {
+            "start": 110.53999999999999,
+            "end": 112.68
+        }
+    ],
+    "47": [
+        " So unless you change who you are, you always have what you got.",
+        {
+            "start": 112.68,
+            "end": 116.06
+        }
+    ],
+    "48": [
+        " Focus on yourself. You deserve it.",
+        {
+            "start": 116.3,
+            "end": 117.76
+        }
+    ],
+    "49": [
+        " Peace.",
+        {
+            "start": 117.92,
+            "end": 118.08
         }
     ]
 }
