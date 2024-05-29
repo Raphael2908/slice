@@ -5,14 +5,12 @@ from flask_cors import CORS
 import transcribe
 import json
 
-
 app = Flask(__name__)
 cors = CORS(app)
 
 @app.route("/")
 def hello_world():
-    response = flask.jsonify({'some': 'data'})
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response = "<h1>Hello from slice!</h1>"
     return response
 
 @app.route("/upload", methods=['GET', 'POST'],)
@@ -34,3 +32,6 @@ def get_transcription():
         data = json.load(file)
 
     return data
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
