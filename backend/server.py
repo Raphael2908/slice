@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import request
-import flask
 from flask_cors import CORS
 import transcribe
 import json
@@ -13,19 +12,19 @@ def hello_world():
     response = "<h1>Hello from slice!</h1>"
     return response
 
-@app.route("/upload", methods=['GET', 'POST'],)
+@app.route("/api/upload", methods=['GET', 'POST'],)
 def upload(): 
     # Get file with audio
     # Plug it into whisper
     # Return data
     if request.method == 'POST':
-        print(request.files.get('video', None))
-        f = request.files.get('video', None)
-        f.save("./temp.mp4")
+        print(request.files.get('audio', None))
+        f = request.files.get('audio', None)
+        f.save("./temp.mp3")
         transcribe.transcribe()
         return "Video transcribed"
 
-@app.route("/transcription", methods=['GET'],)
+@app.route("/api/transcription", methods=['GET'],)
 def get_transcription(): 
     # Reading dictionary from a text file
     with open('output.txt', 'r') as file:

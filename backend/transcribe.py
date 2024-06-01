@@ -1,13 +1,7 @@
 import whisper
-import ffmpeg
-from moviepy.editor import *
-import os
 import json
 
 def transcribe(): 
-    video = VideoFileClip("temp.mp4")
-    video.audio.write_audiofile("temp.mp3")
-    os.remove("temp.mp4")
     model = whisper.load_model("base")
     result = model.transcribe("temp.mp3", language="English", word_timestamps=True)
     output = {}
