@@ -3,7 +3,7 @@ from flask import request
 from flask_cors import CORS
 import transcribe
 import json
-
+import os
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -18,16 +18,22 @@ def upload():
     # Plug it into whisper
     # Return data
     if request.method == 'POST':
-        print(request.files.get('audio', None))
+        # Get audio file and uuid from request
         f = request.files.get('audio', None)
-        f.save("./temp.mp3")
-        transcribe.transcribe()
+        uuid = request.form.get('uuid', None)
+        print(request.files.get('audio', None))
+        print(uuid)
+        audioName = f"./temp-{uuid}" # Create name of audio file
+        f.save(f"{audioName}.mp3")
+        transcribe.transcribe(audioName) # transcribe audio
+        os.remove(f"{audioName}.mp3") # remove audio for saving space
         return "Video transcribed"
 
 @app.route("/api/transcription", methods=['GET'],)
-def get_transcription(): 
+def get_transcription():
+    uuid = request.args.get('uuid')
     # Reading dictionary from a text file
-    with open('output.txt', 'r') as file:
+    with open(f'temp-{uuid}.txt', 'r') as file:
         data = json.load(file)
 
     return data

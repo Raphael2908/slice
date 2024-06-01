@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
   interface Transcription {
@@ -21,6 +22,7 @@ export default function Home() {
   
   // Initialisation
   const ffmpegRef = useRef(new FFmpeg());
+  const uuid =  uuidv4()
 
   const handleUploadVideo = () => {
     const input = inputRef.current;
@@ -31,7 +33,7 @@ export default function Home() {
   };
 
   const getTranscription = () => {
-    fetch("http://127.0.0.1:5000/api/transcription", { method: "GET" }).then(
+    fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, { method: "GET" }).then(
       (response) => {
         response.json().then((json) => setTranscription(json));
       }
@@ -107,6 +109,7 @@ export default function Home() {
     // send audio file to backend for processing
     const formData = new FormData(); // Advised to use FormData by Next.js
     formData.append("audio", blob);
+    formData.append("uuid", uuid)
 
     setIsUpLoadingFile(true);
     await fetch("http://127.0.0.1:5000/api/upload", {
@@ -122,7 +125,7 @@ export default function Home() {
     setIsUpLoadingFile(false);
     
     // get the transcription from the backend
-    await fetch("http://127.0.0.1:5000/api/transcription", {
+    await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
       method: "GET",
     }).then((response) => {
       response.json().then((json) => setTranscription(json));
@@ -155,7 +158,7 @@ export default function Home() {
         style={{ display: "none" }}
         type="file"
         name="video"
-        accept=".mp4,.mp3,.m4a,.mov"
+        accept=".mp4,.mov"
       />
       {preview && (
         <video width="1000" controls>
