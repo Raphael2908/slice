@@ -4,6 +4,7 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { v4 as uuidv4 } from 'uuid';
 
+
 export default function Home() {
   interface Transcription {
     [key: string]: [string, { start: number; end: number }];
@@ -13,14 +14,14 @@ export default function Home() {
   const [preview, setPreview] = useState<string | null>(null);
   const [audio, setAudio] = useState<string | null>(null);
   const [transcription, setTranscription] = useState<Transcription | null>(null);
-
   // Loading States
   const [isExtractingAudio, setIsExtractingAudio] = useState(false);
   const [isUpLoadingFile, setIsUpLoadingFile] = useState(false);
   const ffmpegLoadingRef = useRef<HTMLParagraphElement | null>(null)
-
+  
   
   // Initialisation
+  const amazonSocket = useRef<WebSocket>()
   const ffmpegRef = useRef(new FFmpeg());
   const uuid =  uuidv4()
 
@@ -32,6 +33,17 @@ export default function Home() {
     input.click();
   };
 
+  const connectToSocket = () => {
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_AMAZON_WS!);
+    amazonSocket.current = socket
+    socket.addEventListener("open", (event) => {
+      socket.send("{'action': 'onConnectResponse'}")
+    })
+    socket.addEventListener("message", (message) => {
+      console.log(message)
+    })
+  }
+  
   const getTranscription = () => {
     fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, { method: "GET" }).then(
       (response) => {
@@ -110,26 +122,43 @@ export default function Home() {
     const formData = new FormData(); // Advised to use FormData by Next.js
     formData.append("audio", blob);
     formData.append("uuid", uuid)
-
-    setIsUpLoadingFile(true);
-    await fetch("http://127.0.0.1:5000/api/upload", {
-      method: "POST",
-      body: formData,
-    }).then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error uploading file:", error);
-      });
+   
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      var base64data = reader.result;                
+      
+      if (amazonSocket.current == undefined) {
+        throw new Error("Socket connection not established");
+      }
+      // Construct the JSON object
+      const message = {
+        action: "transcriptionResponse",
+        data: base64data
+      }
+      const messageStr = JSON.stringify(message);
+      console.log('sending message')
+      amazonSocket.current.send(messageStr)
+    }
+    reader.readAsDataURL(blob)
+    // setIsUpLoadingFile(true);
+    // await fetch("http://127.0.0.1:5000/api/upload", {
+    //   method: "POST",
+    //   body: formData,
+    // }).then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error uploading file:", error);
+    //   });
       
     setIsUpLoadingFile(false);
     
     // get the transcription from the backend
-    await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
-      method: "GET",
-    }).then((response) => {
-      response.json().then((json) => setTranscription(json));
-    });
+    // await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
+    //   method: "GET",
+    // }).then((response) => {
+    //   response.json().then((json) => setTranscription(json));
+    // });
   };
 
   useEffect(() => {
@@ -175,6 +204,7 @@ export default function Home() {
 
       <button onClick={handleUploadVideo}>Upload video</button>
       <button onClick={getTranscription}>Get transcription</button>
+      <button onClick={connectToSocket}>connect to socket</button>
       <div>
         {transcription != null
           ? Object.keys(transcription).map((key) => {
