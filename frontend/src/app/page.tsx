@@ -4,14 +4,20 @@ import { useEffect, useRef, useState } from "react"
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"; 
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
+    interface Transcription {
+      [key: string]: [string, { start: number; end: number }];
+    }
     // Video States
     const [videoPreview, setVideoPreview] = useState<string>()
     
     // Audio States
     const [isExtractingAudio, setIsExtractingAudio] = useState<string>()
     const [extractedAudio, setExtractedAudio] = useState<string>()
+    const [transcription, setTranscription] = useState<Transcription | null>(null);
+
     
     // Refs
     const videoInput = useRef<HTMLInputElement>(null)
@@ -33,20 +39,102 @@ export default function Home() {
 
 
         // Extract audio
-        const audioUrl = await audioExtraction(videoFile)
+        const audioBlob: Blob = await audioExtraction(videoFile)
+        const audioUrl: string = URL.createObjectURL(audioBlob);
         setExtractedAudio(audioUrl)
 
         // Upload audio to s3 for processing
-        const s3Client = new S3Client()
-        const bucketName = "slice-data"
-        await s3Client.send(
-            new PutObjectCommand({
-              Bucket: bucketName,
-              Key: "my-first-object.txt",
-              Body: "Hello JavaScript SDK!",
-            })
-          );
+        // const s3Client = new S3Client()
+        // const bucketName = "slice-data"
+        // await s3Client.send(
+        //     new PutObjectCommand({
+        //       Bucket: bucketName,
+        //       Key: "my-first-object.txt",
+        //       Body: "Hello JavaScript SDK!",
+        //     })
+        // );
 
+        // Send audio to server for transcription 
+        const uuid =  uuidv4()
+
+        // Chunk files
+        
+        const chunkSize = 512000 // 512 Kilo Bytes
+        const fileSize = audioBlob.size
+        const fullChunks = (fileSize / chunkSize) | 0 // The | is a or bitwise operator to get the int of the float
+        const partialChunkSize = fileSize % chunkSize
+
+        console.log(fullChunks, partialChunkSize, fileSize)
+
+        // Send chunks to server
+        for (let chunkId = 0; chunkId < fullChunks; chunkId++) {
+          const offset = chunkId * chunkSize 
+          const formData = new FormData(); // Advised to use FormData by Next.js
+
+          let chunk: Blob = audioBlob.slice(offset, chunkSize + offset, 'blob')
+
+          formData.append("chunk", chunk);
+          formData.append("uuid", uuid)
+          formData.append("chunkParams", JSON.stringify({'chunkId': chunkId, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': chunk.size}))
+
+          console.log(chunk)
+          await fetch("http://127.0.0.1:5000/api/upload", {
+            method: "POST",
+            body: formData,
+            mode: 'cors'
+          }).then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error uploading file:", error);
+          });
+        }
+        
+        if(partialChunkSize != 0){
+          const formData = new FormData(); // Advised to use FormData by Next.js
+          console.log(partialChunkSize)
+          let partialChunk: Blob = audioBlob.slice(-partialChunkSize, fileSize, 'blob')
+
+          formData.append("chunk", partialChunk);
+          formData.append("uuid", uuid)
+          formData.append("chunkParams", JSON.stringify({'chunkId': fullChunks, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': partialChunk.size}))
+
+          console.log(partialChunk)
+          await fetch("http://127.0.0.1:5000/api/upload", {
+            method: "POST",
+            body: formData,
+            mode: 'cors'
+          }).then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error uploading file:", error);
+          });
+        }
+
+        console.log('sending audio to backend')
+
+        // request server to transcribe audio
+        const transcribeFormData = new FormData(); // Advised to use FormData by Next.js
+        transcribeFormData.append("uuid", uuid)
+        await fetch("http://127.0.0.1:5000/api/transcribe", {
+          method: "POST",
+          body: transcribeFormData,
+          mode: 'cors'
+        }).then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
+        });
+
+        // get the transcription from the backend
+        await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
+          method: "GET",
+        }).then((response) => {
+          response.json().then((json) => setTranscription(json));
+        });
+        
     }
 
     const audioExtraction = async (video: File) => {
@@ -76,9 +164,8 @@ export default function Home() {
           .catch((error) => console.log(error))) as any;
         
         // You can then use this data, for example by creating a URL for it
-        return URL.createObjectURL(
-          new Blob([data.buffer], { type: "audio/mp3" })
-        );
+        const audioBlob: Blob = new Blob([data.buffer], { type: "audio/mp3" })
+        return audioBlob
     };
 
     useEffect(()=>{
@@ -113,6 +200,20 @@ export default function Home() {
             
             <input className="hidden" type="file" name="video" id="" ref={videoInput} />
             <button className="bg-cyan-700 text-white p-2 rounded-sm" type="button" onClick={() => videoInput.current!.click()}>Upload Video</button>
+            <div>
+            {transcription != null
+              ? Object.keys(transcription).map((key) => {
+                  return (
+                    <div key={key}>
+                      <p>{key}</p>
+                      <p>{transcription[key][0]}</p>
+                      <p>start: {transcription[key][1]["start"]}</p>
+                      <p>end: {transcription[key][1]["end"]}</p>
+                    </div>
+                  );
+                })
+              : null}
+          </div>
         </div>
     )
 }
