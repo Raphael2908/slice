@@ -1,7 +1,8 @@
 from flask import Flask
 from flask import request
 from flask_cors import CORS
-import transcribe
+from flask import Response
+import transcribe_audio
 import json
 import os
 app = Flask(__name__)
@@ -19,24 +20,55 @@ def upload():
     # Return data
     if request.method == 'POST':
         # Get audio file and uuid from request
-        f = request.files.get('audio', None)
+        chunk = request.files.get('chunk', None)
         uuid = request.form.get('uuid', None)
-        print(request.files.get('audio', None))
-        print(uuid)
-        audioName = f"./temp-{uuid}" # Create name of audio file
-        f.save(f"{audioName}.mp3")
-        transcribe.transcribe(audioName) # transcribe audio
-        os.remove(f"{audioName}.mp3") # remove audio for saving space
-        return "Video transcribed"
+        chunkParams = json.loads(request.form.get('chunkParams'))
+        chunk_id = chunkParams['chunkId']
 
-@app.route("/api/transcription", methods=['GET'],)
+        print(chunk)
+        print(uuid)
+        print(chunkParams)
+        
+        audio_filename = f"{uuid}.mp3"
+
+        # handle main chunks first
+        if(chunk_id != chunkParams['fullChunks']): 
+            if(chunk_id == 0): 
+                # create file
+                with open(audio_filename, 'wb') as file:
+                    file.write(chunk.read())
+            else:
+                # append chunks to file
+                with open(audio_filename, 'ab') as file:
+                    file.write(chunk.read())
+
+            return Response('received Chunk', 202)
+
+        # handle partial chunk at the end of file
+        if(chunk_id == chunkParams['fullChunks']): 
+            with open(audio_filename, 'ab') as file:
+                    file.write(chunk.read())
+            return Response('all chunks received', 200)
+        
+
+@app.route("/api/transcribe", methods=['POST'])
+def transcribe():
+    # Get file uuid 
+    # transcribe audio
+    uuid = request.form.get('uuid', None)
+    audioName = f"{uuid}.mp3" # Create name of audio file
+    transcribe_audio.transcribe(audioName) # transcribe audio
+    os.remove(audioName) # remove audio for saving space
+    return Response('Video Transcribed')
+
+@app.route("/api/transcription", methods=['GET'])
 def get_transcription():
     uuid = request.args.get('uuid')
     # Reading dictionary from a text file
-    with open(f'temp-{uuid}.txt', 'r') as file:
+    with open(f'{uuid}.txt', 'r') as file:
         data = json.load(file)
 
     return data
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='127.0.0.1', port=5000, debug=True)
