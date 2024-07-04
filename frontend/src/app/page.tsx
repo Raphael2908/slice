@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"; 
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
@@ -42,17 +41,6 @@ export default function Home() {
         const audioBlob: Blob = await audioExtraction(videoFile)
         const audioUrl: string = URL.createObjectURL(audioBlob);
         setExtractedAudio(audioUrl)
-
-        // Upload audio to s3 for processing
-        // const s3Client = new S3Client()
-        // const bucketName = "slice-data"
-        // await s3Client.send(
-        //     new PutObjectCommand({
-        //       Bucket: bucketName,
-        //       Key: "my-first-object.txt",
-        //       Body: "Hello JavaScript SDK!",
-        //     })
-        // );
 
         // Send audio to server for transcription 
         const uuid =  uuidv4()
