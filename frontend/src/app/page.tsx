@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { v4 as uuidv4 } from 'uuid';
+import { io } from "socket.io-client";
 
 export default function Home() {
     interface Transcription {
@@ -21,6 +22,12 @@ export default function Home() {
     // Refs
     const videoInput = useRef<HTMLInputElement>(null)
     const ffmpegRef = useRef(new FFmpeg());
+
+    // sockets
+    const socket = io("http://localhost:8000");
+    socket.on("connection", (socket) => {
+      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+    });
 
     // On video upload
     const handleFileChange = async () => {
@@ -203,5 +210,6 @@ export default function Home() {
               : null}
           </div>
         </div>
+        
     )
 }
