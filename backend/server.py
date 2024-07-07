@@ -58,8 +58,8 @@ def handle_transcription():
     # Get file uuid 
     # call celery task to transcribe
     uuid = request.form.get('uuid', None)
-    transcribe_task(uuid=uuid) # Celery Task
-    return Response('Video being transcribed')
+    result = transcribe_task.delay(uuid=uuid) # Celery Task
+    return Response({"result_id": result.id})
 
 @app.route("/api/transcription", methods=['GET'])
 def get_transcription():
@@ -75,4 +75,4 @@ def handle_my_custom_event(json):
     print('received json: ' + str(json))
 
 if __name__ == "__main__":
-    socketio.run(app, host='127.0.0.1', port=8000, debug=True)
+    socketio.run(app, host='localhost', port=8000, debug=True)

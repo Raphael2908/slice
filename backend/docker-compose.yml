@@ -28,6 +28,7 @@ services:
       - "5672:5672"
     volumes:
       - .:/api
+    network_mode: "host"
 
   celery:
     build: .
@@ -38,3 +39,4 @@ services:
     depends_on:
       - server
       - rabbitMQ
+    network_mode: "host"

@@ -23,12 +23,6 @@ export default function Home() {
     const videoInput = useRef<HTMLInputElement>(null)
     const ffmpegRef = useRef(new FFmpeg());
 
-    // sockets
-    const socket = io("http://localhost:8000");
-    socket.on("connection", (socket) => {
-      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    });
-
     // On video upload
     const handleFileChange = async () => {
         // Create video preview
@@ -73,7 +67,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': chunkId, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': chunk.size}))
 
           console.log(chunk)
-          await fetch("http://127.0.0.1:5000/api/upload", {
+          await fetch("http://127.0.0.1:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -95,7 +89,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': fullChunks, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': partialChunk.size}))
 
           console.log(partialChunk)
-          await fetch("http://127.0.0.1:5000/api/upload", {
+          await fetch("http://127.0.0.1:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -112,7 +106,7 @@ export default function Home() {
         // request server to transcribe audio
         const transcribeFormData = new FormData(); // Advised to use FormData by Next.js
         transcribeFormData.append("uuid", uuid)
-        await fetch("http://127.0.0.1:5000/api/transcribe", {
+        await fetch("http://127.0.0.1:8000/api/transcribe", {
           method: "POST",
           body: transcribeFormData,
           mode: 'cors'
@@ -124,12 +118,11 @@ export default function Home() {
         });
 
         // get the transcription from the backend
-        await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
+        await fetch(`http://127.0.0.1:8000/api/transcription?uuid=${uuid}`, {
           method: "GET",
         }).then((response) => {
           response.json().then((json) => setTranscription(json));
-        });
-        
+        });   
     }
 
     const audioExtraction = async (video: File) => {
@@ -164,7 +157,11 @@ export default function Home() {
     };
 
     useEffect(()=>{
-        
+        // sockets
+        const socket = io("http://0.0.0.0:8000");
+        socket.on('connect', function() {
+          socket.emit('my event', {data: 'I\'m connected!'});
+        });
         videoInput.current?.addEventListener("change", handleFileChange)
 
         return () => {
