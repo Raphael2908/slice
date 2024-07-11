@@ -12,13 +12,14 @@ export default function Home() {
     }
     // Video States
     const [videoPreview, setVideoPreview] = useState<string>()
-    
+    const [uuid, setUuid] = useState<string>()
+    const [taskId, setTaskId] = useState<string>() 
+
     // Audio States
     const [isExtractingAudio, setIsExtractingAudio] = useState<string>()
     const [extractedAudio, setExtractedAudio] = useState<string>()
     const [transcription, setTranscription] = useState<Transcription | null>(null);
 
-    
     // Refs
     const videoInput = useRef<HTMLInputElement>(null)
     const ffmpegRef = useRef(new FFmpeg());
@@ -44,7 +45,8 @@ export default function Home() {
         setExtractedAudio(audioUrl)
 
         // Send audio to server for transcription 
-        const uuid =  uuidv4()
+        const uuid = uuidv4()
+        setUuid(uuid)
 
         // Chunk files
         
@@ -112,17 +114,12 @@ export default function Home() {
           mode: 'cors'
         }).then((response) => {
           console.log(response);
+          response.json().then((json) => setTaskId(json['result_id']))
         })
         .catch((error) => {
           console.error("Error uploading file:", error);
         });
 
-        // get the transcription from the backend
-        await fetch(`http://127.0.0.1:8000/api/transcription?uuid=${uuid}`, {
-          method: "GET",
-        }).then((response) => {
-          response.json().then((json) => setTranscription(json));
-        });   
     }
 
     const audioExtraction = async (video: File) => {
@@ -158,17 +155,29 @@ export default function Home() {
 
     useEffect(()=>{
         // sockets
-        const socket = io("http://0.0.0.0:8000");
+        const socket = io("http://127.0.0.1:8000");
+
         socket.on('connect', function() {
           socket.emit('my event', {data: 'I\'m connected!'});
         });
+
+        if(taskId && uuid){
+          socket.on(taskId, async function() {
+              await fetch(`http://127.0.0.1:8000/api/transcription?uuid=${uuid}`, {
+                method: "GET",
+              }).then((response) => {
+                response.json().then((json) => setTranscription(json));
+              });   
+          })
+        }
         videoInput.current?.addEventListener("change", handleFileChange)
 
         return () => {
-            videoInput.current?.removeEventListener("change", handleFileChange)
+          socket.disconnect()
+          videoInput.current?.removeEventListener("change", handleFileChange)
         }
 
-    }, [])
+    }, [uuid, taskId])
 
     return (
         <div className="container mx-auto">
