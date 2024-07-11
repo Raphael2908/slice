@@ -2,11 +2,13 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS
 from flask import Response
-import transcribe_audio
+from tasks import transcribe_task
 import json
-import os
+from flask_socketio import SocketIO
+
 app = Flask(__name__)
 cors = CORS(app)
+socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000'])
 
 @app.route("/")
 def hello_world():
@@ -52,14 +54,14 @@ def upload():
         
 
 @app.route("/api/transcribe", methods=['POST'])
-def transcribe():
+def handle_transcription():
     # Get file uuid 
-    # transcribe audio
+    # call celery task to transcribe
     uuid = request.form.get('uuid', None)
-    audioName = f"{uuid}.mp3" # Create name of audio file
-    transcribe_audio.transcribe(audioName) # transcribe audio
-    os.remove(audioName) # remove audio for saving space
-    return Response('Video Transcribed')
+    # result = add.apply_async((4, 6), link=on_success, link_error=on_failure)
+    result = transcribe_task.delay(uuid) # Celery Task
+    data = json.dumps({"result_id": result.id})
+    return data
 
 @app.route("/api/transcription", methods=['GET'])
 def get_transcription():
@@ -70,5 +72,16 @@ def get_transcription():
 
     return data
 
+@app.route("/api/transcription_done", methods=['POST'])
+def transcription_done():
+    data = request.json
+    task_id = data.get('task_id')
+    socketio.emit(task_id, {'data': 42})
+    return Response("transcription done")
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    socketio.run(app, host='127.0.0.1', port=8000, debug=True)

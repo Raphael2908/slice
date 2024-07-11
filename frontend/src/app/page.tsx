@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { v4 as uuidv4 } from 'uuid';
+import { io } from "socket.io-client";
 
 export default function Home() {
     interface Transcription {
@@ -11,13 +12,14 @@ export default function Home() {
     }
     // Video States
     const [videoPreview, setVideoPreview] = useState<string>()
-    
+    const [uuid, setUuid] = useState<string>()
+    const [taskId, setTaskId] = useState<string>() 
+
     // Audio States
     const [isExtractingAudio, setIsExtractingAudio] = useState<string>()
     const [extractedAudio, setExtractedAudio] = useState<string>()
     const [transcription, setTranscription] = useState<Transcription | null>(null);
 
-    
     // Refs
     const videoInput = useRef<HTMLInputElement>(null)
     const ffmpegRef = useRef(new FFmpeg());
@@ -43,7 +45,8 @@ export default function Home() {
         setExtractedAudio(audioUrl)
 
         // Send audio to server for transcription 
-        const uuid =  uuidv4()
+        const uuid = uuidv4()
+        setUuid(uuid)
 
         // Chunk files
         
@@ -66,7 +69,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': chunkId, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': chunk.size}))
 
           console.log(chunk)
-          await fetch("http://127.0.0.1:5000/api/upload", {
+          await fetch("http://127.0.0.1:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -88,7 +91,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': fullChunks, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': partialChunk.size}))
 
           console.log(partialChunk)
-          await fetch("http://127.0.0.1:5000/api/upload", {
+          await fetch("http://127.0.0.1:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -105,24 +108,18 @@ export default function Home() {
         // request server to transcribe audio
         const transcribeFormData = new FormData(); // Advised to use FormData by Next.js
         transcribeFormData.append("uuid", uuid)
-        await fetch("http://127.0.0.1:5000/api/transcribe", {
+        await fetch("http://127.0.0.1:8000/api/transcribe", {
           method: "POST",
           body: transcribeFormData,
           mode: 'cors'
         }).then((response) => {
           console.log(response);
+          response.json().then((json) => setTaskId(json['result_id']))
         })
         .catch((error) => {
           console.error("Error uploading file:", error);
         });
 
-        // get the transcription from the backend
-        await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
-          method: "GET",
-        }).then((response) => {
-          response.json().then((json) => setTranscription(json));
-        });
-        
     }
 
     const audioExtraction = async (video: File) => {
@@ -157,14 +154,30 @@ export default function Home() {
     };
 
     useEffect(()=>{
-        
+        // sockets
+        const socket = io("http://127.0.0.1:8000");
+
+        socket.on('connect', function() {
+          socket.emit('my event', {data: 'I\'m connected!'});
+        });
+
+        if(taskId && uuid){
+          socket.on(taskId, async function() {
+              await fetch(`http://127.0.0.1:8000/api/transcription?uuid=${uuid}`, {
+                method: "GET",
+              }).then((response) => {
+                response.json().then((json) => setTranscription(json));
+              });   
+          })
+        }
         videoInput.current?.addEventListener("change", handleFileChange)
 
         return () => {
-            videoInput.current?.removeEventListener("change", handleFileChange)
+          socket.disconnect()
+          videoInput.current?.removeEventListener("change", handleFileChange)
         }
 
-    }, [])
+    }, [uuid, taskId])
 
     return (
         <div className="container mx-auto">
@@ -203,5 +216,6 @@ export default function Home() {
               : null}
           </div>
         </div>
+        
     )
 }
