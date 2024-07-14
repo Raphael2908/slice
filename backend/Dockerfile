@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 # Install FFmpeg for whisper
 RUN apt-get update && \
+    apt-get install -y ffmpeg && \
     apt-get clean
 
 COPY requirements.txt ./
