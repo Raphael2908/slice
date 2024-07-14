@@ -69,7 +69,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': chunkId, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': chunk.size}))
 
           console.log(chunk)
-          await fetch("http://127.0.0.1:8000/api/upload", {
+          await fetch("http://localhost:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -91,7 +91,7 @@ export default function Home() {
           formData.append("chunkParams", JSON.stringify({'chunkId': fullChunks, 'fullChunks': fullChunks, 'fileSize': fileSize, 'chunkSize': partialChunk.size}))
 
           console.log(partialChunk)
-          await fetch("http://127.0.0.1:8000/api/upload", {
+          await fetch("http://localhost:8000/api/upload", {
             method: "POST",
             body: formData,
             mode: 'cors'
@@ -108,7 +108,7 @@ export default function Home() {
         // request server to transcribe audio
         const transcribeFormData = new FormData(); // Advised to use FormData by Next.js
         transcribeFormData.append("uuid", uuid)
-        await fetch("http://127.0.0.1:8000/api/transcribe", {
+        await fetch("http://localhost:8000/api/transcribe", {
           method: "POST",
           body: transcribeFormData,
           mode: 'cors'
@@ -155,7 +155,7 @@ export default function Home() {
 
     useEffect(()=>{
         // sockets
-        const socket = io("http://127.0.0.1:8000");
+        const socket = io("http://localhost:8000");
 
         socket.on('connect', function() {
           socket.emit('my event', {data: 'I\'m connected!'});
@@ -163,7 +163,7 @@ export default function Home() {
 
         if(taskId && uuid){
           socket.on(taskId, async function() {
-              await fetch(`http://127.0.0.1:8000/api/transcription?uuid=${uuid}`, {
+              await fetch(`http://localhost:8000/api/transcription?uuid=${uuid}`, {
                 method: "GET",
               }).then((response) => {
                 response.json().then((json) => setTranscription(json));

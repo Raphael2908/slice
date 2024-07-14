@@ -45,7 +45,7 @@ export default function Home() {
   }
   
   const getTranscription = () => {
-    fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, { method: "GET" }).then(
+    fetch(`http://localhost:5000/api/transcription?uuid=${uuid}`, { method: "GET" }).then(
       (response) => {
         response.json().then((json) => setTranscription(json));
       }
@@ -141,7 +141,7 @@ export default function Home() {
     }
     reader.readAsDataURL(blob)
     // setIsUpLoadingFile(true);
-    // await fetch("http://127.0.0.1:5000/api/upload", {
+    // await fetch("http://localhost:5000/api/upload", {
     //   method: "POST",
     //   body: formData,
     // }).then((response) => {
@@ -154,7 +154,7 @@ export default function Home() {
     setIsUpLoadingFile(false);
     
     // get the transcription from the backend
-    // await fetch(`http://127.0.0.1:5000/api/transcription?uuid=${uuid}`, {
+    // await fetch(`http://localhost:5000/api/transcription?uuid=${uuid}`, {
     //   method: "GET",
     // }).then((response) => {
     //   response.json().then((json) => setTranscription(json));
