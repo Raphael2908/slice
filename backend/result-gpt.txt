@@ -1,0 +1,32 @@
+["{159.52: Using React Native to Interface with Other Platforms}\n
+{241.68: Why APIs are Essential for Accessing Data}\n
+{676.36: Building a Reddit Client Using APIs}", 
+"{864.0: The Evolution of Reddit Apps on iOS}\n
+{1001.84: Understanding How APIs Work}\n
+{1460.08: The Importance of JSON in API Responses}", 
+"{1631.28: Exploring Different Endpoints in APIs}\n
+{1695.28: Understanding Real-Time APIs and Parameters}\n
+{1875.24: Creating a Bus Routing Information Site with APIs}", 
+"{2651.48: Using Codeium AI for Design Assistance}\n
+{2736.2: Implementing Loading Indicators in React Native}\n
+{2830.72: Fetching Data from a URL in React Native}", 
+"{4034.0: Introduction to OpenAI and ChatGPT}\n
+{4471.96: Understanding Different Models and Costs in OpenAI}\n
+{4820.0: Setting Up the OpenAI API Key in Your Project}", 
+"{4995.0: Installing XOS}\n{5076.08: Selecting User Preferences}\n
+{5368.72: Troubleshooting RNPickerSelect}", 
+"{6495.68: Setting Up Authentication with AWS Amplify}\n
+{6662.0: Importance of Analytics in Production Applications}\n
+{6864.04: Simplifying REST API Setup with AWS Lambda}", 
+"{7355.36: Efficiency of GraphQL}\n
+{7514.8: Choosing Between SQL and NoSQL Databases}\n
+{8031.08: AWS Lambda for Quick Backend Functions}", 
+"{8578.6: Storing Images and Videos in Amazon S3}\n
+{9233.96: Importance of Secret Key Security}\n
+{9292.6: Initializing Amplify in a Project}", 
+"{9511.8: Setting Up Components for a To-Do App}\n
+{9653.98: Understanding the Importance of Syncing Data Across Devices}\n
+{9857.04: Importance of APIs in App Development}", 
+"{10171.9: How to Handle a Forgotten API Key}\n
+{10240.68: Importance of Keeping Paid Services API Keys Secure}\n
+{10326.04: Announcement of Launch Event and Qualifiers}"]

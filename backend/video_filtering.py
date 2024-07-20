@@ -12,11 +12,8 @@ OPENAI_ORG_ID = os.getenv('OPENAI_ORG_ID')
 
 client = OpenAI(api_key=OPENAI_TEST_KEY)
 
-timestamps = []
-
-chunked_text = []
-
-def handle_chunking_text(filename): 
+def handle_chunking_text(filename: str) -> list: 
+    chunked_text = []
     # Read in text data from file
     f = open(filename, 'rt')
     data = f.read()
@@ -27,7 +24,6 @@ def handle_chunking_text(filename):
     chunks = math.floor(len(text_dictionary.keys()) / chunk_size)
     partial_chunk_size = len(text_dictionary.keys()) % chunk_size
     large_text = list(text_dictionary.values())
-    
 
     # Add chunks of text to list
     for i in range(chunks):
@@ -40,6 +36,7 @@ def handle_chunking_text(filename):
     partial_chunk = large_text[partial_chunk_end:]
     chunked_text.append(partial_chunk)
     print('Texts have been chunked')
+    return chunked_text
 
 def gpt_api_call(transcription_text: list):
     transcription_text
@@ -86,17 +83,22 @@ def gpt_api_call(transcription_text: list):
     )
     return response
 
-def create_timestamps(): 
-    # for chunk in chunked_text: 
-    #     result = gpt_api_call(chunk)
-    #     timestamps.append(result.choices[0].message.content)
-    for index in range(1): 
-        result = gpt_api_call(chunked_text[0])
+def create_timestamps(chunked_text: list) -> list: 
+    timestamps = []
+    for chunk in chunked_text: 
+        result = gpt_api_call(chunk)
         timestamps.append(result.choices[0].message.content)
+    # for index in range(1): 
+    #     result = gpt_api_call(chunked_text[0])
+    #     timestamps.append(result.choices[0].message.content)
+    return timestamps
 
 # print(response)
 
 if __name__ == '__main__':
-    handle_chunking_text('3hr-audio-file.txt')
-    create_timestamps()
+    chunked_text = handle_chunking_text('3hr-audio-file.txt')
+    timestamps = create_timestamps(chunked_text)
     print(timestamps)
+    with open('result-gpt.txt', 'w') as file: 
+        json.dump(timestamps, file)
+    
