@@ -1,0 +1,7 @@
+ChatCompletion(id='chatcmpl-9mK5tr7DGtmOZueYqg8FyLZ2WMYtS', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='
+{159.52: Using React Native to Interface with Other Platforms}\n
+{241.68: Why APIs are Essential for Accessing Data}\n
+{676.36: Building a Reddit Client Using APIs}', 
+role='assistant', function_call=None, tool_calls=None)
+)], created=1721304013, model='gpt-3.5-turbo-0125', object='chat.completion', system_fingerprint=None, usage=CompletionUsage(completion_tokens=40, prompt_tokens=11777, total_tokens=11817)
+)

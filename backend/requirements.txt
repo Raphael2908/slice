@@ -53,6 +53,8 @@ nest-asyncio==1.6.0
 networkx==3.3
 numba==0.59.1
 numpy==1.26.4
+openai==1.30.3
+openai-whisper==20231117
 opt-einsum==3.3.0
 optax==0.2.3
 orbax-checkpoint==0.5.20
@@ -61,6 +63,7 @@ pillow==10.3.0
 proglog==0.1.10
 prompt_toolkit==3.0.47
 protobuf==5.27.2
+psutil==6.0.0
 pydantic==2.7.1
 pydantic_core==2.18.2
 Pygments==2.18.0
