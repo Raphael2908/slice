@@ -12,6 +12,7 @@ OPENAI_ORG_ID = os.getenv('OPENAI_ORG_ID')
 
 client = OpenAI(api_key=OPENAI_TEST_KEY)
 
+# chunks large texts into 256 lines/chunk
 def handle_chunking_text(filename: str) -> list: 
     chunked_text = []
     # Read in text data from file
@@ -38,12 +39,14 @@ def handle_chunking_text(filename: str) -> list:
     print('Texts have been chunked')
     return chunked_text
 
+# calls gpt-3.5-turbo-0125 model via open ai api
 def gpt_api_call(transcription_text: list):
     transcription_text
     result_string = ' '.join(
         f"[{sublist[0].strip()} {{start: {sublist[1]['start']}, end: {sublist[1]['end']}}}]"
         for sublist in transcription_text
     )
+    prompt = "You are to analyse a long video transcript and pick out the best sections of the transcript for a student. \n\nEach section must be a minimum of 5mins long and have a title based on your summary of the section\n\nYour output must follow the format of: {Timestamp: Title}"
     response = client.chat.completions.create(
     model="gpt-3.5-turbo-0125",
     messages=[
@@ -51,7 +54,7 @@ def gpt_api_call(transcription_text: list):
         "role": "system",
         "content": [
             {
-            "text": "You are to analyse a long video transcript and pick out the best sections of the transcript for a student. \n\nEach section must be a minimum of 5mins long and have a title based on your summary of the section\n\nYour output must follow the format of: {Timestamp: Title} \n\n",
+            "text": prompt,
             "type": "text"
             }
         ]
@@ -83,22 +86,37 @@ def gpt_api_call(transcription_text: list):
     )
     return response
 
+# sends chunks to gpt_api_call to generate timestamps
 def create_timestamps(chunked_text: list) -> list: 
     timestamps = []
     for chunk in chunked_text: 
         result = gpt_api_call(chunk)
-        timestamps.append(result.choices[0].message.content)
+        timestamps.append(result.choices[0].message.content) # ChatCompletion object from openai
     # for index in range(1): 
     #     result = gpt_api_call(chunked_text[0])
     #     timestamps.append(result.choices[0].message.content)
     return timestamps
 
-# print(response)
+# Chains the functions required to produce the timestamps for frontend
+def video_filtering(filename: str) -> list: 
+    chunked_text = handle_chunking_text(filename)
+    timestamps = create_timestamps(chunked_text)
+    result = []
+    # with open('example-result-gpt.txt', 'rt') as file: 
+    #     data = file.read()
+    #     timestamps = json.loads(data)
+    for i in range(len(timestamps)): 
+        timestamp = timestamps[i].split("\n")
+        result.extend(timestamp)
+    # result -> ['{159.52: Using React Native to Interface with Other Platforms}', '{241.68: Why APIs are Essential for Accessing Data}', '{676.36: Building a Reddit Client Using APIs}']
+
+    return result    
+    
 
 if __name__ == '__main__':
-    chunked_text = handle_chunking_text('3hr-audio-file.txt')
-    timestamps = create_timestamps(chunked_text)
-    print(timestamps)
-    with open('result-gpt.txt', 'w') as file: 
-        json.dump(timestamps, file)
-    
+    # chunked_text = handle_chunking_text('3hr-audio-file.txt')
+    # timestamps = create_timestamps(chunked_text)
+    # print(timestamps)
+    # with open('result-gpt.txt', 'w') as file: 
+    #     json.dump(timestamps, file)
+    video_filtering('3hr-audio-file.txt')
