@@ -8,7 +8,7 @@ from flask_socketio import SocketIO
 
 app = Flask(__name__)
 cors = CORS(app)
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000'])
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 @app.route("/")
 def hello_world():
@@ -84,4 +84,4 @@ def handle_my_custom_event(json):
     print('received json: ' + str(json))
 
 if __name__ == "__main__":
-    socketio.run(app, host='127.0.0.1', port=8000, debug=True)
+    socketio.run(app, host='localhost', port=8000, debug=True)

@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - .:/usr/src/app
 
   nginx:
     image: nginx:latest
@@ -28,15 +28,16 @@ services:
       - "5672:5672"
     volumes:
       - .:/api
-    network_mode: "host"
 
   celery:
     build: .
     container_name: celery_worker
     command: celery -A tasks worker 
-    volumes:
-      - .:/app
     depends_on:
       - server
       - rabbitMQ
-    network_mode: "host"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - CELERY_BROKER_URL=pyamqp://guest:guest@rabbitMQ:5672//
+      - CELERY_RESULT_BACKEND=rpc://
