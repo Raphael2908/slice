@@ -4,7 +4,8 @@ from flask_cors import CORS
 from flask import Response
 from tasks import transcribe_task
 import json
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
+from gpt_processor import video_filtering
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -58,9 +59,8 @@ def handle_transcription():
     # Get file uuid 
     # call celery task to transcribe
     uuid = request.form.get('uuid', None)
-    # result = add.apply_async((4, 6), link=on_success, link_error=on_failure)
-    result = transcribe_task.delay(uuid) # Celery Task
-    data = json.dumps({"result_id": result.id})
+    transcription_task = transcribe_task.delay(uuid) # Celery Task
+    data = json.dumps({"transcription_task_id": transcription_task.id})
     return data
 
 @app.route("/api/transcription", methods=['GET'])
@@ -76,12 +76,17 @@ def get_transcription():
 def transcription_done():
     data = request.json
     task_id = data.get('task_id')
-    socketio.emit(task_id, {'data': 42})
+    socketio.emit(task_id, {'hello': 'world'})
     return Response("transcription done")
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('received json: ' + str(json))
+
+@socketio.on('generate_timestamps')
+def handle_generate_timestamps(uuid):
+    timestamps = video_filtering(f'{uuid}.txt')
+    emit(uuid, timestamps)
 
 if __name__ == "__main__":
     socketio.run(app, host='localhost', port=8000, debug=True)

@@ -14,6 +14,7 @@ export default function Home() {
     const [videoPreview, setVideoPreview] = useState<string>()
     const [uuid, setUuid] = useState<string>()
     const [taskId, setTaskId] = useState<string>() 
+    const [timestamps, setTimestamps] = useState<string>()
 
     // Audio States
     const [isExtractingAudio, setIsExtractingAudio] = useState<string>()
@@ -114,7 +115,7 @@ export default function Home() {
           mode: 'cors'
         }).then((response) => {
           console.log(response);
-          response.json().then((json) => setTaskId(json['result_id']))
+          response.json().then((json) => setTaskId(json['transcription_task_id']))
         })
         .catch((error) => {
           console.error("Error uploading file:", error);
@@ -167,9 +168,14 @@ export default function Home() {
                 method: "GET",
               }).then((response) => {
                 response.json().then((json) => setTranscription(json));
+                socket.emit('generate_timestamps', uuid)
+                socket.on(uuid, (timestamps) => {
+                  setTimestamps(timestamps)
+                })
               });   
           })
         }
+
         videoInput.current?.addEventListener("change", handleFileChange)
 
         return () => {
@@ -214,6 +220,9 @@ export default function Home() {
                   );
                 })
               : null}
+          </div>
+          <div>
+          {timestamps != null ? JSON.stringify(timestamps) : null}
           </div>
         </div>
         
