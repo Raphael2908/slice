@@ -168,10 +168,8 @@ export default function Home() {
                 method: "GET",
               }).then((response) => {
                 response.json().then((json) => setTranscription(json));
-                console.log('emitting generate_timestamp')
                 socket.emit('generate_timestamps', uuid)
                 socket.on(uuid, (timestamps) => {
-                  console.log(timestamps)
                   setTimestamps(timestamps)
                 })
               });   

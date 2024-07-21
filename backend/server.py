@@ -85,7 +85,6 @@ def handle_my_custom_event(json):
 
 @socketio.on('generate_timestamps')
 def handle_generate_timestamps(uuid):
-    print('got requests for timestamps')
     timestamps = video_filtering(f'{uuid}.txt')
     emit(uuid, timestamps)
 
