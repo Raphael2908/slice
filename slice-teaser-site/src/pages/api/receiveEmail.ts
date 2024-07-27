@@ -17,7 +17,6 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method === 'POST') {
-    console.log(validateEmail(req.body.email))
     if(validateEmail(req.body.email) == null){
       res.status(422).json({message: 'invalid email'})
       return
@@ -26,8 +25,13 @@ export default async function handler(
       'chat_id': process.env.TELEGRAM_CHAT_ID,
       'text': req.body.email
     })
-    .then(()=> res.status(200).json({ message: 'email received' }))
-    .catch(error => res.status(500).json({ message: 'internal server error' }))
+    .then(() => {
+      return res.status(200).json({ message: 'email received' })
+    })
+    .catch(error => {
+      console.log(error)
+      return res.status(500).json({ message: `internal server error ${error}` })
+    })
     
   } else {
     // Handle any other HTTP method
