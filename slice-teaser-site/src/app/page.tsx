@@ -69,7 +69,7 @@ export default function Home() {
             <p className="lg:text-left xl:text-xl font-inter font-light text-lg text-center">Consume a 2hr lecture in just 10mins by cutting out the boring parts</p>
             {/* Form */}
             <form className="flex justify-center w-full shadow-lg rounded-md" onSubmit={onSubmit}>
-                <input onChange={(e) => setEmailInput(e.target.value)} className="w-full rounded-l-md p-2" type="text" placeholder="name@slice.com" name="Email sign up"/>
+                <input onChange={(e) => setEmailInput(e.target.value)} className="w-full rounded-l-md p-2" type="text" placeholder="email@example.com" name="Email sign up"/>
                 <button className="whitespace-nowrap bg-slice-pink text-white p-2 rounded-r-md">Join the waitlist</button>
             </form>
           </div>
