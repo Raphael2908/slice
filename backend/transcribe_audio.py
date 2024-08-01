@@ -23,3 +23,11 @@ def transcribe(audio_name):
         json.dump(output, file, indent=4)
 
     return output
+
+if (__name__ == "__main__"): 
+    import jax
+    print(jax.devices())
+    start = time.time()
+    transcribe('standford-sample-1hr27min.mp3')
+    end = time.time()
+    print(end - start)
